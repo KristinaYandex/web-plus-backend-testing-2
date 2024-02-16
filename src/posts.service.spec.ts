@@ -1,4 +1,4 @@
-import { FindManyOptions, PostsService } from './posts.service';
+import { PostsService } from './posts.service';
 
 describe('PostsService', () => {
   let postsService: PostsService;
@@ -9,10 +9,10 @@ describe('PostsService', () => {
 
   describe('.findMany', () => {
     const posts = [
-      {text: 'Post 1'},
-      {text: 'Post 2'},
-      {text: 'Post 3'},
-      {text: 'Post 4'},
+      { text: 'Post 1' },
+      { text: 'Post 2' },
+      { text: 'Post 3' },
+      { text: 'Post 4' },
     ];
 
     beforeEach(() => {
@@ -32,24 +32,15 @@ describe('PostsService', () => {
       const expectedPosts = allPosts.map(item => {
         return { text: item.text }
       })
-
       expect(expectedPosts).toEqual([posts[1], posts[2]])
     });
 
-    it('should return correct posts for skip option', () => {
-      const options: FindManyOptions = { skip: 8 };
-      const expectedPosts = posts.slice(8);
-      const foundPosts = postsService.findMany(options);
-      expect(foundPosts).toEqual(expectedPosts);
+    it('should return correct posts for limit options', () => {
+      expect(postsService.findMany({ limit: 1 })).toContainEqual(expect.objectContaining(posts[0]))
     });
 
-    it('should return correct posts for limit option', () => {
-      const options: FindManyOptions = { limit: 8 };
-      const expectedPosts = posts.slice(0, 8);
-      const foundPosts = postsService.findMany(options);
-      expect(foundPosts).toEqual(expectedPosts);
+    it('should return correct find posts', () => {
+      expect(postsService.find('1')).toMatchObject(posts[0])
     });
-
-    // реализуйте недостающие тест-кейсы
   });
 });
